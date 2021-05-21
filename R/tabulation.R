@@ -1,6 +1,13 @@
 
-
+#' section of functions to generate summary tables by 2+ groups
+#' 
 #' twoway table of categorical data
+#' @param data dataset containing group factor and the x-variable to be summed up
+#' @param x variable to be summed
+#' @param bin logical indicator to only use last row of two-way table (FALSE is default)
+#' @param cens positive integer deciding the lower threshold for when to clear cells in order to hide very detailed patient-level data
+#' @param force.two logical to use for counts where values >1 should be considered 1 (then effectively testing and showing a binary variable).
+#' @param show.na logical to use missing data as an explicit category (default FALSE)
 #' @export
 twoway.chi <- function(data, x, group, bin=F, cens, force.two=F, show.na=F) {
   # get data
@@ -28,7 +35,8 @@ twoway.chi <- function(data, x, group, bin=F, cens, force.two=F, show.na=F) {
   # combine n and %
   tab <- matrix(rbind(tab, form.it(prop.table(tab, 2)*100, 1)), nrow=nrow(tab))
 
-  if (sum(as.numeric(tab[,1])<=cens)>=1 | sum(as.numeric(tab[,3])<=cens)>=1){
+  # 
+  if (sum(as.num(tab[,1])<=cens & as.num(tab[,1])>0)>=1 | sum(as.num(tab[,3])<=cens & as.numeric(tab[,3])>0)>=1){
     p <- paste0("n<", cens)
   }
 
