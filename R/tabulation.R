@@ -1,5 +1,5 @@
 
-#' section of functions to generate summary tables by 2+ groups
+#' functions to generate summary tables by 2+ groups
 #' 
 #' twoway table of categorical data
 #' @param data dataset containing group factor and the x-variable to be summed up
@@ -8,6 +8,8 @@
 #' @param cens positive integer deciding the lower threshold for when to clear cells in order to hide very detailed patient-level data
 #' @param force.two logical to use for counts where values >1 should be considered 1 (then effectively testing and showing a binary variable).
 #' @param show.na logical to use missing data as an explicit category (default FALSE)
+#' @return returns a data.frame. Has standardized column names, ready to stack with output from other grit::twoway* functions.
+#' 
 #' @export
 twoway.chi <- function(data, x, group, bin=F, cens, force.two=F, show.na=F) {
   # get data
@@ -61,6 +63,11 @@ twoway.chi <- function(data, x, group, bin=F, cens, force.two=F, show.na=F) {
 }
 
 #' twoway table of n indicator data
+#' 
+#' @param data data frame with the group identifier and n-counter
+#' @param x the n count, should be just a konstant k=1, unless data is aggregated
+#' @param group the name of the variable which identifies groups/arms.
+#' 
 #' @export
 twoway.n <- function(data, x, group){
   d <- data[!is.na(data[[group]]),]
@@ -75,8 +82,16 @@ twoway.n <- function(data, x, group){
 }
 
 #' twoway table of numeric data
-#' @export
-twoway.num <- function(data, x, group, digit.m=1, digit.sd=1, inf=FALSE, cal.date=F){
+#' 
+#' @param data data frame
+#' @param x the numeric variable to be summarized
+#' @param group the variable which identifies treatment/comparison groups 
+#' @param digit.m number of digits on mean estimates
+#' @param digit.sd number of digits for estimates of the standard deviation
+#' @param cal.date logical indicating that the x variable should be treated as a date. Will then show the mean value as an actual date.
+#' 
+#' @export 
+twoway.num <- function(data, x, group, digit.m=1, digit.sd=1, cal.date=F){
   d <- data[!is.na(data[[group]]),]
   groups <- unique(na.omit(d[[group]]))
   tab <- rep(NA, 2*length(groups)+2)
@@ -103,6 +118,15 @@ twoway.num <- function(data, x, group, digit.m=1, digit.sd=1, inf=FALSE, cal.dat
 }
 
 #' wraps up (align & stack)  a set of twoway tables
+#' 
+#' @param data data frame
+#' @param xs list of variables that should be summarized
+#' @param treat character variable indicating treatment/comparison groups
+#' @param num character vector with names of those variables in xs that are to be summarized as numeric variables
+#' @param cat character vector with names of those variables in xs that are to be summarized as categorical variables
+#' @param bin character vector with names of those variables in xs that are to be summarized as binary variables
+#' @param num dichotomize vector with names of those categorical variables in xs that should be dichotomized before summarizing 
+#' 
 #' @export
 tabulate <- function(data, xs, treat, num=NA, cat=NA, bin=NA, dichotomize=NA, cal.date=NA, cens=5, show.na=F){
   data <- as.rdf(data)
