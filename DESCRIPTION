@@ -1,11 +1,23 @@
 Package: grit
-Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Function library to handle Danish health registry data
+        efficiently for prediction purposes.
+Version: 0.1.1
+Authors@R: 
+    person(given = "Anders Bo",
+           family = "Bojesen",
+           role = c("aut", "cre"),
+           email = "anders@socioskop.dk",
+           comment = c(ORCID = "0000-0002-5321-6855"))
+Description: grit is a collection of tools that builds local database from SQL sources, from which you can pull data directly. It reduces strain on SQL server memory and enables parallelization and faster interaction with source data. Includes a set of functions for rough dimension reduction and preprocessing.
+License: `bsd_3_clause`
 Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: data.table, dplyr, purrr, reshape, RJDBC, renv, stringr,
+        magrittr,
+Depends: R (>= 2.10), data.table
+NeedsCompilation: no
+Packaged: 2021-04-21 19:41:42 UTC; fskAndBoo
+Author: Anders Bo Bojesen [aut, cre] (<https://orcid.org/0000-0002-5321-6855>)
+Maintainer: Anders Bo Bojesen <anders@socioskop.dk>
